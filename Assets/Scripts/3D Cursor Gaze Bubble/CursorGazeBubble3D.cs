@@ -21,6 +21,9 @@ public class CursorGazeBubble3D : MonoBehaviour
     {
         // Initialize the last mouse position
         lastMousePosition = Input.mousePosition;
+
+        if (MenuController.saccade || MenuController.smoothPursuit)
+            sphere.localScale = new Vector3(0.2f, 0.2f, 1f);    //Constant scale is required in these modes
     }
 
     void Update()

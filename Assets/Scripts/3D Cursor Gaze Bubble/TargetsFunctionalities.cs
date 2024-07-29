@@ -37,10 +37,19 @@ public class TargetsFunctionalities : MonoBehaviour
             if (timer >= interactableTime)
             {
                 Debug.Log("Objects are overlapping eachother for more than " + timer + " seconds");
-                transform.GetComponent<MeshRenderer>().material = dummyMat;
                 check = false;          //If primary target found stop checking
-                isPrimary = false;
-                TargetsPlacement3D.instance.randomPrimaryTarget();  //Changing the primary target
+
+                if (MenuController.cursorGaze)
+                {
+                    transform.GetComponent<MeshRenderer>().material = dummyMat;
+                    isPrimary = false;
+
+                    TargetsPlacement3D.instance.randomPrimaryTargetCursorGaze();  //Changing the primary target
+                }
+                else if (MenuController.saccade)
+                {
+                    TargetsPlacement3D.instance.randomPrimaryTargetSacccade();  //Changing position of the primary target
+                }
             }
         }
         else
