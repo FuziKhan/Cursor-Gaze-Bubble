@@ -7,6 +7,13 @@ public class CameraPlaneIntersection : MonoBehaviour
 
     bool stop = false;
 
+    private void Awake()
+    {
+    }
+    private void OnEnable()
+    {
+        stop = false;
+    }
     void Update()
     {
         if (!stop)

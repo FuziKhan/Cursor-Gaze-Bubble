@@ -25,10 +25,6 @@ public class CursorGazeBubble : MonoBehaviour
     [SerializeField]
     private float bubbleHeight;
 
-    [Header("Cursor Changing Speed")]
-    [SerializeField]
-    private float cursorTransitionSpeed = 3f;    //Speed factor by which the bubbleCursor changes size
-
     [Header("Target Interactable Time")]
     [SerializeField]
     private float interactableTime = 1f;         //Time interval after which target changes position
@@ -48,7 +44,6 @@ public class CursorGazeBubble : MonoBehaviour
 
     public Color dummColor;
 
-    float minDummyDistance = Mathf.Infinity;
     GameObject closestDummy = null; // To keep track of the closest dummy
     float relevantDistance;
 

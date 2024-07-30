@@ -10,16 +10,24 @@ public class TargetsPlacement3D : MonoBehaviour
     public GameObject spherePrefabSaccade; // Prefab of the 3D sphere
     public Transform planeTransform; // Reference to the 3D plane
     public GameObject targetsParent;
+
     public int numberOfSpheres = 10;
 
     public float speed = 1.0f; // Speed of movement
-    private List<Transform[]> circlePoints;
-    private int currentCircleIndex = 0;
-    private int currentPointIndex = 0;
+
+    public Vector3[] circlePoints;
+    public Vector3[] saccadePoints;
+
+    public bool horizontalSaccade = false;
+    public bool verticalSaccade = false;
 
     public Vector3 upperRightBound, lowerLeftBound;
 
     public Action randomPrimaryTargetCursorGaze, randomPrimaryTargetSacccade;
+
+    public float timer = 30f;
+
+    private int currentPointIndex = 0;
 
     private List<Transform> placedSpheres = new List<Transform>();
 
@@ -30,27 +38,19 @@ public class TargetsPlacement3D : MonoBehaviour
         if (instance == null)
             instance = this;
     }
-
-    void Start()
+    private void OnEnable()
     {
         if (MenuController.cursorGaze)
         {
             randomPrimaryTargetCursorGaze += RandomPrimaryTarget;
         }
-        else if (MenuController.saccade || MenuController.smoothPursuit)
+        else
         {
             PlaceSphereInCircle();
-            randomPrimaryTargetSacccade += RandomPrimaryTargetSaccade;
+
             if (MenuController.smoothPursuit)
             {
-                // Get the CircleDrawer instance and its points
-                CircleDrawer drawer = FindObjectOfType<CircleDrawer>();
-                if (drawer != null)
-                {
-                    circlePoints = drawer.GetCirclePoints();
-                }
-
-                if (circlePoints == null || circlePoints.Count == 0)
+                if (circlePoints == null || circlePoints.Length == 0)
                 {
                     Debug.LogError("No circle points found!");
                     return;
@@ -59,57 +59,92 @@ public class TargetsPlacement3D : MonoBehaviour
                 // Start the movement coroutine
                 StartCoroutine(MoveAlongPoints());
             }
+            StartCoroutine(TimeLapsedChecker());
         }
     }
     IEnumerator MoveAlongPoints()
     {
-        while (true)
+        while (true && placedSpheres.Count > 0)
         {
-            if (circlePoints == null || circlePoints.Count == 0)
+            if (circlePoints == null || circlePoints.Length == 0)
             {
                 yield break; // Exit the coroutine if there are no points
             }
 
-            Transform[] currentCircle = circlePoints[currentCircleIndex];
-
-            if (currentCircle == null || currentCircle.Length == 0)
-            {
-                yield break; // Exit the coroutine if the current circle has no points
-            }
-
-            Transform targetPoint = currentCircle[currentPointIndex];
-            Vector3 targetPosition = targetPoint.position;
+            Vector3 targetPosition = circlePoints[currentPointIndex];
 
             // Move towards the target point
-            while (Vector3.Distance(placedSpheres[0].transform.position, targetPosition) > 0.01f)
+            if (placedSpheres[0] != null)
             {
-                placedSpheres[0].transform.position = Vector3.MoveTowards(placedSpheres[0].transform.position, targetPosition, speed * Time.deltaTime);
-                yield return null;
-            }
-
-            // Move to the next point
-            currentPointIndex++;
-            if (currentPointIndex >= currentCircle.Length)
-            {
-                currentPointIndex = 0;
-                currentCircleIndex++;
-                if (currentCircleIndex >= circlePoints.Count)
+                while (Vector3.Distance(placedSpheres[0].transform.position, targetPosition) > 0.01f)
                 {
-                    currentCircleIndex = 0; // Loop back to the first circle
+                    placedSpheres[0].transform.position = Vector3.MoveTowards(placedSpheres[0].transform.position, targetPosition, speed * Time.deltaTime);
+                    yield return null;
                 }
             }
-
+            // Move to the next point
+            currentPointIndex++;
+            if (currentPointIndex >= circlePoints.Length)
+            {
+                currentPointIndex = 0; // Loop back to the first point
+            }
             yield return null;
+        }
+    }
+    IEnumerator TimeLapsedChecker()
+    {
+        if (MenuController.smoothPursuit)
+        {
+            yield return new WaitForSeconds(timer);
+            CompleteSimulation();
+        }
+        else if (MenuController.saccade)
+        {
+            float elapsedTime = 0f;
+            float checkInterval = 1f;
+
+            while (elapsedTime < timer)
+            {
+                float intervalStartTime = Time.time;
+
+                while (Time.time - intervalStartTime < checkInterval)
+                {
+                    // Perform any logic you need to check every frame here
+                    yield return null;
+                }
+
+                // Logic to be executed every second
+                Debug.Log("One second has passed");
+                SaccadePositionChange();
+                elapsedTime += checkInterval;
+            }
+            Debug.Log("30 seconds have passed. Exiting coroutine.");
+            CompleteSimulation();
         }
     }
     public void PlaceSphereInCircle()
     {
         Transform newSphereTransform = Instantiate(spherePrefabSaccade).transform;
         newSphereTransform.SetParent(targetsParent.transform);
-        int x = UnityEngine.Random.Range(0, 2);
-        int y = UnityEngine.Random.Range(0, CircleDrawer.instance.circlePoints[x].Length - 1);
-        newSphereTransform.transform.position = CircleDrawer.instance.circlePoints[x][y].position;
+
         placedSpheres.Add(newSphereTransform);
+        SaccadePositionChange();
+    }
+    void SaccadePositionChange()
+    {
+        if (placedSpheres.Count > 0)
+        {
+            if (horizontalSaccade)
+            {
+                int x = UnityEngine.Random.Range(2, 4);
+                placedSpheres[0].transform.position = new Vector3(saccadePoints[x].x, saccadePoints[x].y, saccadePoints[x].z);
+            }
+            else if (verticalSaccade)
+            {
+                int x = UnityEngine.Random.Range(0, 2);
+                placedSpheres[0].transform.position = new Vector3(saccadePoints[x].x, saccadePoints[x].y, saccadePoints[x].z);
+            }
+        }
     }
     public void PlaceSpheresRandomly(int count)
     {
@@ -180,10 +215,34 @@ public class TargetsPlacement3D : MonoBehaviour
     {
         placedSpheres[UnityEngine.Random.Range(0, placedSpheres.Count - 1)].GetComponent<TargetsFunctionalities>().isPrimary = true;
     }
-    void RandomPrimaryTargetSaccade()
+    public void SaccadeModeChooser(int mode)
     {
-        int x = UnityEngine.Random.Range(0, 2);
-        int y = UnityEngine.Random.Range(0, CircleDrawer.instance.circlePoints[x].Length - 1);
-        placedSpheres[0].transform.position = CircleDrawer.instance.circlePoints[x][y].position;
+        if (mode == 0)
+        {
+            horizontalSaccade = true;
+            verticalSaccade = false;
+        }
+        else if (mode == 1)
+        {
+            horizontalSaccade = false;
+            verticalSaccade = true;
+        }
+    }
+
+    public void CompleteSimulation()
+    {
+        MenuController.instance.CompletePanel();
+    }
+    public void ResetAll()
+    {
+        for (int i = 0; i < placedSpheres.Count; i++)
+            Destroy(placedSpheres[i].gameObject);
+
+        placedSpheres.Clear();
+        CursorGazeBubble3D.instance.dummySpheres.Clear();
+        if (CircleDrawer.instance)
+        {
+            CircleDrawer.instance.lineRenderer.positionCount = 0;
+        }
     }
 }

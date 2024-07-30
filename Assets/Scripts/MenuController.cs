@@ -1,20 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
     public static bool cursorGaze, saccade, smoothPursuit = false;
 
-    public GameObject cursorGazeScript, targetPlacementScript,
-        cameraPlaneIntersectionScript, circleDrwaerScript;
+    public CursorGazeBubble3D cursorGazeScript;
+    public TargetsPlacement3D targetPlacementScript;
+    public CameraPlaneIntersection cameraPlaneIntersectionScript;
+    public CircleDrawer circleDrwaerScript;
+
+    public GameObject saccadeModes;
+    public GameObject completePanel;
+    public GameObject modes;
+
+    public GameObject backButton;
+
+    public static MenuController instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
 
     public void SelectMode(int mode)
     {
         gameObject.SetActive(false);
+        saccadeModes.SetActive(false);
+        backButton.SetActive(true);
 
         switch (mode)
         {
+            //The seuqence of turning on scripts is vital
             case 0:
                 Debug.Log("Cursor Gaze Bubble Selected");
 
@@ -22,9 +38,9 @@ public class MenuController : MonoBehaviour
                 saccade = false;
                 smoothPursuit = false;
 
-                cursorGazeScript.SetActive(true);
-                targetPlacementScript.SetActive(true);
-                cameraPlaneIntersectionScript.SetActive(true);
+                cursorGazeScript.enabled = true;
+                targetPlacementScript.enabled = true;
+                cameraPlaneIntersectionScript.enabled = true;
                 break;
             case 1:
                 Debug.Log("Saccade Selected");
@@ -33,9 +49,9 @@ public class MenuController : MonoBehaviour
                 saccade = true;
                 smoothPursuit = false;
 
-                circleDrwaerScript.SetActive(true);     //This should always get active 1st
-                cursorGazeScript.SetActive(true);
-                targetPlacementScript.SetActive(true);
+                circleDrwaerScript.enabled = true;     //This should always get active 1st
+                cursorGazeScript.enabled = true;
+                targetPlacementScript.enabled = true;
                 break;
             case 2:
                 Debug.Log("Smooth Pursuit Selected");
@@ -44,10 +60,34 @@ public class MenuController : MonoBehaviour
                 saccade = false;
                 smoothPursuit = true;
 
-                circleDrwaerScript.SetActive(true);     //This should always get active 1st
-                cursorGazeScript.SetActive(true);
-                targetPlacementScript.SetActive(true);
+                circleDrwaerScript.enabled = true;     //This should always get active 1st
+                cursorGazeScript.enabled = true;
+                targetPlacementScript.enabled = true;
                 break;
         }
+    }
+    public void CompletePanel()
+    {
+        Debug.Log("Simulation Completed");
+        gameObject.SetActive(true);
+        modes.SetActive(false);
+        completePanel.SetActive(true);
+        backButton.SetActive(false);
+    }
+    public void Home()
+    {
+        modes.SetActive(true);
+        cursorGazeScript.enabled = false;
+        targetPlacementScript.enabled = false;
+        cameraPlaneIntersectionScript.enabled = false;
+        circleDrwaerScript.enabled = false;
+
+        TargetsPlacement3D.instance.ResetAll();
+    }
+    public void BackButton()
+    {
+        backButton.SetActive(false);
+
+        TargetsPlacement3D.instance.CompleteSimulation();
     }
 }
