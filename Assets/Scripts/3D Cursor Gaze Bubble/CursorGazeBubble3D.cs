@@ -4,10 +4,14 @@ using UnityEngine;
 public class CursorGazeBubble3D : MonoBehaviour
 {
     public Transform sphere; // Reference to the main sphere GameObject
-    public float speed = 0.1f; // Speed at which the sphere follows the mouse
     public Camera mainCamera; // Reference to the main camera
-    public List<Transform> dummySpheres; // List of dummy spheres
+    [HideInInspector]
+    public List<Transform> dummySpheres = new List<Transform>(); // List of dummy spheres
     public float scaleLerpSpeed = 1f;   //How fast the cursor will scale
+
+    public GameObject targetsParent;
+    public float timer = 30f;
+    public float speed = 1.0f; // Speed of movement
 
     private Vector3 lastMousePosition;
 
@@ -57,7 +61,6 @@ public class CursorGazeBubble3D : MonoBehaviour
             }
         }
     }
-
     Transform FindClosestDummy()
     {
         Transform closestDummy = null;
@@ -65,13 +68,48 @@ public class CursorGazeBubble3D : MonoBehaviour
 
         foreach (Transform dummy in dummySpheres)
         {
-            float distance = Vector3.Distance(sphere.position, dummy.position);
-            if (distance < minDistance)
+            if (dummy != null)
             {
-                minDistance = distance;
-                closestDummy = dummy;
+                float distance = Vector3.Distance(sphere.position, dummy.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestDummy = dummy;
+                }
             }
         }
         return closestDummy;
+    }
+    protected List<Transform> GetPlacedSpheres()
+    {
+        return dummySpheres;
+    }
+    protected void SetPlacedSpheres(Transform obj)
+    {
+        dummySpheres.Add(obj);
+    }
+    public void CompleteSimulation()
+    {
+        MenuController.instance.CompletePanel();
+    }
+    public void ResetAll()
+    {
+        if (dummySpheres.Count > 0)
+        {
+            for (int i = 0; i < dummySpheres.Count; i++)
+                Destroy(dummySpheres[i].gameObject);
+        }
+        else
+        {
+            for (int i = 0; i < targetsParent.transform.childCount; i++)
+            {
+                Destroy(targetsParent.transform.GetChild(i).gameObject);
+            }
+        }
+        dummySpheres.Clear();
+        if (CircleDrawer.instance)
+        {
+            CircleDrawer.instance.lineRenderer.positionCount = 0;
+        }
     }
 }

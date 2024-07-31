@@ -8,6 +8,8 @@ public class MenuController : MonoBehaviour
     public TargetsPlacement3D targetPlacementScript;
     public CameraPlaneIntersection cameraPlaneIntersectionScript;
     public CircleDrawer circleDrwaerScript;
+    public SaccadeController saccadeController;
+    public SmoothPursuitController smoothPursuitController;
 
     public GameObject saccadeModes;
     public GameObject completePanel;
@@ -51,7 +53,8 @@ public class MenuController : MonoBehaviour
 
                 circleDrwaerScript.enabled = true;     //This should always get active 1st
                 cursorGazeScript.enabled = true;
-                targetPlacementScript.enabled = true;
+                //targetPlacementScript.enabled = true;
+                saccadeController.enabled = true;
                 break;
             case 2:
                 Debug.Log("Smooth Pursuit Selected");
@@ -62,7 +65,8 @@ public class MenuController : MonoBehaviour
 
                 circleDrwaerScript.enabled = true;     //This should always get active 1st
                 cursorGazeScript.enabled = true;
-                targetPlacementScript.enabled = true;
+                //targetPlacementScript.enabled = true;
+                smoothPursuitController.enabled = true;
                 break;
         }
     }
@@ -77,17 +81,26 @@ public class MenuController : MonoBehaviour
     public void Home()
     {
         modes.SetActive(true);
+
         cursorGazeScript.enabled = false;
         targetPlacementScript.enabled = false;
         cameraPlaneIntersectionScript.enabled = false;
         circleDrwaerScript.enabled = false;
+        saccadeController.enabled = false;
+        smoothPursuitController.enabled = false;
 
-        TargetsPlacement3D.instance.ResetAll();
+        saccadeController.horizontalSaccade = false;
+        saccadeController.verticalSaccade = false;
+
+        saccadeController.StopAllCoroutines();
+        smoothPursuitController.StopAllCoroutines();
+
+        CursorGazeBubble3D.instance.ResetAll();
     }
     public void BackButton()
     {
         backButton.SetActive(false);
 
-        TargetsPlacement3D.instance.CompleteSimulation();
+        CursorGazeBubble3D.instance.CompleteSimulation();
     }
 }

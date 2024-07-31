@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TargetsFunctionalities : MonoBehaviour
@@ -42,10 +39,11 @@ public class TargetsFunctionalities : MonoBehaviour
                 transform.GetComponent<MeshRenderer>().material = dummyMat;
                 isPrimary = false;
 
-                TargetsPlacement3D.instance.randomPrimaryTargetCursorGaze();  //Changing the primary target
+                //TargetsPlacement3D.instance.randomPrimaryTargetCursorGaze();  //Changing the primary target
+                TargetsPlacement3D.instance.RandomPrimaryTarget();
             }
         }
-        else if(MenuController.cursorGaze)
+        else if (MenuController.cursorGaze)
         {
             if (isPrimary)
             {

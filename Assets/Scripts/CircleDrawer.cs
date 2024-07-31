@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class CircleDrawer : MonoBehaviour
 {
-    public float radius; // The radius of the circle
     public Material lineMaterial; // Material for the LineRenderer
+
+    public float radius = 5f; // The radius of the circle
+    public int segments = 100; // The number of segments to approximate the circle
+    public float speed = 1f; // Speed for moving object
     public LineRenderer lineRenderer;
+    public float theta = 0f; // Initial angle
+
+    SaccadeController saccadeController;
 
     public static CircleDrawer instance;
 
@@ -17,6 +23,8 @@ public class CircleDrawer : MonoBehaviour
     }
     private void OnEnable()
     {
+        saccadeController = new SaccadeController();
+
         if (lineMaterial == null)
         {
             Debug.LogError("Line Material is not assigned.");
@@ -28,29 +36,25 @@ public class CircleDrawer : MonoBehaviour
             Debug.LogError("Line Renderer is not assigned.");
             return;
         }
-
-        DrawCircle(radius);
-        TargetsPlacement3D.instance.circlePoints = GetCirclePoints();
-        TargetsPlacement3D.instance.saccadePoints = GetKeyPoints(radius);
-    }
-    void DrawCircle(float radius)
-    {
-        int segments = 360;
+        lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = segments + 1;
-        lineRenderer.widthMultiplier = 0.05f;
-        lineRenderer.loop = true;
+        lineRenderer.useWorldSpace = false;
         lineRenderer.material = lineMaterial; // Set the material for the LineRenderer
+        lineRenderer.widthMultiplier = 0.05f;
+        //DrawCircle(radius);
+        CreatePoints();
+    }
+    void CreatePoints()
+    {
+        float angleStep = 2 * Mathf.PI / segments;
 
-        Vector3[] positions = new Vector3[segments + 1];
-        for (int i = 0; i < segments; i++)
+        for (int i = 0; i < segments + 1; i++)
         {
-            float angle = i * Mathf.Deg2Rad;
-            float x = Mathf.Cos(angle) * radius;
-            float y = Mathf.Sin(angle) * radius;
-            positions[i] = new Vector3(x, y, 0);
+            float x = radius * Mathf.Cos(i * angleStep);
+            float y = radius * Mathf.Sin(i * angleStep);
+
+            lineRenderer.SetPosition(i, new Vector3(x, y, 0));
         }
-        positions[segments] = positions[0]; // Loop back to the start
-        lineRenderer.SetPositions(positions);
     }
     public Vector3[] GetCirclePoints()
     {

@@ -131,7 +131,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 51279479}
-  - component: {fileID: 51279480}
   m_Layer: 0
   m_Name: Targets
   m_TagString: Untagged
@@ -154,32 +153,6 @@ Transform:
   m_Father: {fileID: 290899210}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &51279480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51279478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 865eb1df1acc78c4cb02a47f9b082335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 1769667588}
-  spherePrefabCursorGaze: {fileID: 7132519623627073930, guid: f830503fa773e62488f9f6b4db8c9aa5, type: 3}
-  spherePrefabSaccade: {fileID: 7132519623627073930, guid: ba7b4d6f255454e4cb27d4a0aaed2c55, type: 3}
-  planeTransform: {fileID: 290899210}
-  targetsParent: {fileID: 51279478}
-  numberOfSpheres: 50
-  speed: 50
-  circlePoints: []
-  saccadePoints: []
-  horizontalSaccade: 0
-  verticalSaccade: 1
-  upperRightBound: {x: 0, y: 0, z: 0}
-  lowerLeftBound: {x: 0, y: 0, z: 0}
-  timer: 10
 --- !u!1 &92237635
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +447,9 @@ Transform:
   m_Children:
   - {fileID: 1571749998}
   - {fileID: 1705785137}
+  - {fileID: 648130292}
+  - {fileID: 1823880500}
+  - {fileID: 2054965096}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -919,8 +895,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TargetsPlacement3D, Assembly-CSharp
+      - m_Target: {fileID: 648130291}
+        m_TargetAssemblyTypeName: SaccadeController, Assembly-CSharp
         m_MethodName: SaccadeModeChooser
         m_Mode: 3
         m_Arguments:
@@ -930,6 +906,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 971162187}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 317039486}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &398588987
 MonoBehaviour:
@@ -1007,6 +1007,61 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &648130290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 648130292}
+  - component: {fileID: 648130291}
+  m_Layer: 0
+  m_Name: SaccadeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &648130291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648130290}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db66f9f0d2152643a0fbabb18322eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphere: {fileID: 331233169}
+  mainCamera: {fileID: 1769667588}
+  dummySpheres: []
+  scaleLerpSpeed: 10
+  targetsParent: {fileID: 51279478}
+  timer: 30
+  speed: 1
+  spherePrefabSaccade: {fileID: 7132519623627073930, guid: ba7b4d6f255454e4cb27d4a0aaed2c55, type: 3}
+  saccadePoints: []
+  horizontalSaccade: 0
+  verticalSaccade: 0
+--- !u!4 &648130292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648130290}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220307834}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &697441009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,9 +1888,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorGazeScript: {fileID: 1946272553}
-  targetPlacementScript: {fileID: 51279480}
+  targetPlacementScript: {fileID: 2054965097}
   cameraPlaneIntersectionScript: {fileID: 1571749997}
   circleDrwaerScript: {fileID: 1705785136}
+  saccadeController: {fileID: 648130291}
+  smoothPursuitController: {fileID: 1823880499}
   saccadeModes: {fileID: 620695181}
   completePanel: {fileID: 1871398855}
   modes: {fileID: 327179022}
@@ -2106,8 +2163,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TargetsPlacement3D, Assembly-CSharp
+      - m_Target: {fileID: 648130291}
+        m_TargetAssemblyTypeName: SaccadeController, Assembly-CSharp
         m_MethodName: SaccadeModeChooser
         m_Mode: 3
         m_Arguments:
@@ -2117,6 +2174,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 971162187}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 317039486}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1221866835
 MonoBehaviour:
@@ -2263,6 +2344,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 971162187}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 92237635}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1229482660
 MonoBehaviour:
@@ -2606,9 +2711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc8c32d24afbb49b752f0b28c28baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
   lineMaterial: {fileID: 2100000, guid: 1726db92bab64d74b98402300e9124b6, type: 2}
+  radius: 2
+  segments: 360
+  speed: 1
   lineRenderer: {fileID: 1705785138}
+  theta: 0
 --- !u!4 &1705785137
 Transform:
   m_ObjectHideFlags: 0
@@ -2807,6 +2915,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1823880498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1823880500}
+  - component: {fileID: 1823880499}
+  m_Layer: 0
+  m_Name: SmoothPursuitController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1823880499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823880498}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870a22a39dbedef40bfec67da68c65da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphere: {fileID: 331233169}
+  mainCamera: {fileID: 1769667588}
+  dummySpheres: []
+  scaleLerpSpeed: 10
+  targetsParent: {fileID: 51279478}
+  timer: 30
+  speed: 1
+  spherePrefabSmoothPursuit: {fileID: 7132519623627073930, guid: ba7b4d6f255454e4cb27d4a0aaed2c55, type: 3}
+--- !u!4 &1823880500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823880498}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220307834}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871398855
 GameObject:
   m_ObjectHideFlags: 0
@@ -2934,10 +3094,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sphere: {fileID: 331233169}
-  speed: 0.01
   mainCamera: {fileID: 1769667588}
   dummySpheres: []
   scaleLerpSpeed: 10
+  targetsParent: {fileID: 51279478}
+  timer: 30
+  speed: 0.01
 --- !u!1 &2011613665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3045,6 +3207,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 92237635}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 317039486}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2011613668
 MonoBehaviour:
@@ -3164,6 +3350,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024353456}
   m_CullTransparentMesh: 1
+--- !u!1 &2054965095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2054965096}
+  - component: {fileID: 2054965097}
+  m_Layer: 0
+  m_Name: CursorGazeBubbleController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2054965096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054965095}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220307834}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2054965097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054965095}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865eb1df1acc78c4cb02a47f9b082335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphere: {fileID: 331233169}
+  mainCamera: {fileID: 1769667588}
+  dummySpheres: []
+  scaleLerpSpeed: 10
+  targetsParent: {fileID: 51279478}
+  timer: 30
+  speed: 1
+  spherePrefabCursorGaze: {fileID: 7132519623627073930, guid: f830503fa773e62488f9f6b4db8c9aa5, type: 3}
+  numberOfSpheres: 50
+  upperRightBound: {x: 0, y: 0, z: 0}
+  lowerLeftBound: {x: 0, y: 0, z: 0}
 --- !u!1 &2104600972
 GameObject:
   m_ObjectHideFlags: 0
