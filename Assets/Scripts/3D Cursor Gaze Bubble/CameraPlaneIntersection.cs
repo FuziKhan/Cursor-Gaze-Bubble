@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class CameraPlaneIntersection : MonoBehaviour
 {
+    [Header("Main Camera")]
     public Camera cam;  // Reference to the camera
+
+    [Header("Board")]
     public Transform plane;  // Reference to the plane
 
-    bool stop = false;
+    private bool stop = false;
 
     private void OnEnable()
     {
@@ -35,13 +38,13 @@ public class CameraPlaneIntersection : MonoBehaviour
                     Debug.Log("Viewport corner " + i + " intersects the plane at: " + hitPoint);
                     if (i == 0)
                     {
-                        TargetsPlacement3D.instance.lowerLeftBound = hitPoint;
+                        CursorGazeBubbleController.instance.lowerLeftBound = hitPoint;
                     }
                     else if (i == 3)
                     {
-                        TargetsPlacement3D.instance.upperRightBound = hitPoint;
+                        CursorGazeBubbleController.instance.upperRightBound = hitPoint;
                         stop = true;
-                        TargetsPlacement3D.instance.PlaceSpheresRandomly(TargetsPlacement3D.instance.numberOfSpheres);
+                        CursorGazeBubbleController.instance.PlaceSpheresRandomly(CursorGazeBubbleController.instance.numberOfSpheres);
                     }
                 }
             }

@@ -1,21 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CursorGazeBubble3D : MonoBehaviour
+public class CursorController : MonoBehaviour
 {
+    [Header("Cursor Sphere")]
     public Transform sphere; // Reference to the main sphere GameObject
+
+    [Header("Main Camera")]
     public Camera mainCamera; // Reference to the main camera
-    [HideInInspector]
-    public List<Transform> dummySpheres = new List<Transform>(); // List of dummy spheres
+
+    [Header("Speed For Cursor Transition")]
     public float scaleLerpSpeed = 1f;   //How fast the cursor will scale
 
+    [Header("Targets Parent")]
     public GameObject targetsParent;
+
+    [Header("Time For Simulation")]
     public float timer = 30f;
+
+    [Header("Speed For Target Movement")]
     public float speed = 1.0f; // Speed of movement
+
+    [HideInInspector]
+    public List<Transform> dummySpheres = new List<Transform>(); // List of dummy spheres
 
     private Vector3 lastMousePosition;
 
-    public static CursorGazeBubble3D instance;
+    public static CursorController instance;
+
     private void Awake()
     {
         if (instance == null)

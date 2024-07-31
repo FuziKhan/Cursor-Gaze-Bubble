@@ -1,20 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-public class SmoothPursuitController : CursorGazeBubble3D
+public class SmoothPursuitController : CursorController
 {
-    SmoothPursuitController smoothPursuitController;
+    [Header("Prefab For Smooth Pursuit")]
+    public GameObject spherePrefabSmoothPursuit; // Prefab of the 3D sphere
+
+    private SmoothPursuitController smoothPursuitController;
 
     private int currentPointIndex = 0;
-
-    public GameObject spherePrefabSmoothPursuit; // Prefab of the 3D sphere
 
     private void OnEnable()
     {
         smoothPursuitController = new SmoothPursuitController();
 
-        
-            PlaceSphereInCirclePursuit();
+        PlaceSphereInCirclePursuit();
 
         StartCoroutine(TimeLapsedCheckerPursuit());
     }

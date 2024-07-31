@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class TargetsFunctionalities : MonoBehaviour
 {
+    [Header("Primary Target Check")]
     public bool isPrimary = false;
+
+    [Header("Interactable Time")]
     public float interactableTime = 1f;
+
+    [Header("Materials For Targets")]
     public Material primaryMat, dummyMat;
 
     private float timer = 0f;
@@ -39,8 +44,7 @@ public class TargetsFunctionalities : MonoBehaviour
                 transform.GetComponent<MeshRenderer>().material = dummyMat;
                 isPrimary = false;
 
-                //TargetsPlacement3D.instance.randomPrimaryTargetCursorGaze();  //Changing the primary target
-                TargetsPlacement3D.instance.RandomPrimaryTarget();
+                CursorGazeBubbleController.instance.RandomPrimaryTarget();
             }
         }
         else if (MenuController.cursorGaze)

@@ -4,17 +4,24 @@ public class MenuController : MonoBehaviour
 {
     public static bool cursorGaze, saccade, smoothPursuit = false;
 
-    public CursorGazeBubble3D cursorGazeScript;
-    public TargetsPlacement3D targetPlacementScript;
+    [Header("Controller Scripts")]
+    public CursorController cursorGazeScript;
+    public CursorGazeBubbleController cursorGazeBubbleScript;
     public CameraPlaneIntersection cameraPlaneIntersectionScript;
-    public CircleDrawer circleDrwaerScript;
+    public CircleDrawer circleDrawerScript;
     public SaccadeController saccadeController;
     public SmoothPursuitController smoothPursuitController;
 
+    [Header("Saccade Modes Menu")]
     public GameObject saccadeModes;
+
+    [Header("Complete Menu")]
     public GameObject completePanel;
+
+    [Header("Modes Menu")]
     public GameObject modes;
 
+    [Header("Back Button")]
     public GameObject backButton;
 
     public static MenuController instance;
@@ -41,7 +48,7 @@ public class MenuController : MonoBehaviour
                 smoothPursuit = false;
 
                 cursorGazeScript.enabled = true;
-                targetPlacementScript.enabled = true;
+                cursorGazeBubbleScript.enabled = true;
                 cameraPlaneIntersectionScript.enabled = true;
                 break;
             case 1:
@@ -51,9 +58,8 @@ public class MenuController : MonoBehaviour
                 saccade = true;
                 smoothPursuit = false;
 
-                circleDrwaerScript.enabled = true;     //This should always get active 1st
+                circleDrawerScript.enabled = true;     //This should always get active 1st
                 cursorGazeScript.enabled = true;
-                //targetPlacementScript.enabled = true;
                 saccadeController.enabled = true;
                 break;
             case 2:
@@ -63,9 +69,8 @@ public class MenuController : MonoBehaviour
                 saccade = false;
                 smoothPursuit = true;
 
-                circleDrwaerScript.enabled = true;     //This should always get active 1st
+                circleDrawerScript.enabled = true;     //This should always get active 1st
                 cursorGazeScript.enabled = true;
-                //targetPlacementScript.enabled = true;
                 smoothPursuitController.enabled = true;
                 break;
         }
@@ -83,9 +88,9 @@ public class MenuController : MonoBehaviour
         modes.SetActive(true);
 
         cursorGazeScript.enabled = false;
-        targetPlacementScript.enabled = false;
+        cursorGazeBubbleScript.enabled = false;
         cameraPlaneIntersectionScript.enabled = false;
-        circleDrwaerScript.enabled = false;
+        circleDrawerScript.enabled = false;
         saccadeController.enabled = false;
         smoothPursuitController.enabled = false;
 
@@ -95,12 +100,12 @@ public class MenuController : MonoBehaviour
         saccadeController.StopAllCoroutines();
         smoothPursuitController.StopAllCoroutines();
 
-        CursorGazeBubble3D.instance.ResetAll();
+        CursorController.instance.ResetAll();
     }
     public void BackButton()
     {
         backButton.SetActive(false);
 
-        CursorGazeBubble3D.instance.CompleteSimulation();
+        CursorController.instance.CompleteSimulation();
     }
 }

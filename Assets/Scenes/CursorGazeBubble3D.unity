@@ -1038,13 +1038,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphere: {fileID: 331233169}
   mainCamera: {fileID: 1769667588}
-  dummySpheres: []
   scaleLerpSpeed: 10
   targetsParent: {fileID: 51279478}
   timer: 30
   speed: 1
+  dummySpheres: []
   spherePrefabSaccade: {fileID: 7132519623627073930, guid: ba7b4d6f255454e4cb27d4a0aaed2c55, type: 3}
-  saccadePoints: []
   horizontalSaccade: 0
   verticalSaccade: 0
 --- !u!4 &648130292
@@ -1888,9 +1887,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorGazeScript: {fileID: 1946272553}
-  targetPlacementScript: {fileID: 2054965097}
+  cursorGazeBubbleScript: {fileID: 2054965097}
   cameraPlaneIntersectionScript: {fileID: 1571749997}
-  circleDrwaerScript: {fileID: 1705785136}
+  circleDrawerScript: {fileID: 1705785136}
   saccadeController: {fileID: 648130291}
   smoothPursuitController: {fileID: 1823880499}
   saccadeModes: {fileID: 620695181}
@@ -2713,8 +2712,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineMaterial: {fileID: 2100000, guid: 1726db92bab64d74b98402300e9124b6, type: 2}
   radius: 2
-  segments: 360
-  speed: 1
   lineRenderer: {fileID: 1705785138}
   theta: 0
 --- !u!4 &1705785137
@@ -2946,11 +2943,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphere: {fileID: 331233169}
   mainCamera: {fileID: 1769667588}
-  dummySpheres: []
   scaleLerpSpeed: 10
   targetsParent: {fileID: 51279478}
   timer: 30
   speed: 1
+  dummySpheres: []
   spherePrefabSmoothPursuit: {fileID: 7132519623627073930, guid: ba7b4d6f255454e4cb27d4a0aaed2c55, type: 3}
 --- !u!4 &1823880500
 Transform:
@@ -3095,11 +3092,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphere: {fileID: 331233169}
   mainCamera: {fileID: 1769667588}
-  dummySpheres: []
   scaleLerpSpeed: 10
   targetsParent: {fileID: 51279478}
   timer: 30
   speed: 0.01
+  dummySpheres: []
 --- !u!1 &2011613665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3396,11 +3393,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphere: {fileID: 331233169}
   mainCamera: {fileID: 1769667588}
-  dummySpheres: []
   scaleLerpSpeed: 10
   targetsParent: {fileID: 51279478}
   timer: 30
   speed: 1
+  dummySpheres: []
   spherePrefabCursorGaze: {fileID: 7132519623627073930, guid: f830503fa773e62488f9f6b4db8c9aa5, type: 3}
   numberOfSpheres: 50
   upperRightBound: {x: 0, y: 0, z: 0}

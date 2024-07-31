@@ -2,18 +2,18 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class SaccadeController : CursorGazeBubble3D
+public class SaccadeController : CursorController
 {
-    private SaccadeController saccadeController;
-
+    [Header("Prefab For Saccade")]
     public GameObject spherePrefabSaccade; // Prefab of the 3D sphere
 
-    public Vector3[] saccadePoints;
-
-    public Action randomPrimaryTargetSacccade;
-
+    [Header("Saccade Orientation Checks")]
     public bool horizontalSaccade = false;
     public bool verticalSaccade = false;
+
+    private Vector3[] saccadePoints;
+
+    private SaccadeController saccadeController;
 
     private void OnEnable()
     {

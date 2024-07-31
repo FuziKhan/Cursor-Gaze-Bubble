@@ -2,15 +2,21 @@ using UnityEngine;
 
 public class CircleDrawer : MonoBehaviour
 {
+    [Header("Material For Circle")]
     public Material lineMaterial; // Material for the LineRenderer
 
+    [Header("Radius Of Circle")]
     public float radius = 5f; // The radius of the circle
-    public int segments = 100; // The number of segments to approximate the circle
-    public float speed = 1f; // Speed for moving object
+
+    [Header("Line Renderer Component")]
     public LineRenderer lineRenderer;
+
+    [Header("Initial Angle")]
     public float theta = 0f; // Initial angle
 
-    SaccadeController saccadeController;
+    private int segments = 100; // The number of segments to approximate the circle
+
+    private SaccadeController saccadeController;
 
     public static CircleDrawer instance;
 
@@ -41,7 +47,6 @@ public class CircleDrawer : MonoBehaviour
         lineRenderer.useWorldSpace = false;
         lineRenderer.material = lineMaterial; // Set the material for the LineRenderer
         lineRenderer.widthMultiplier = 0.05f;
-        //DrawCircle(radius);
         CreatePoints();
     }
     void CreatePoints()
@@ -55,12 +60,6 @@ public class CircleDrawer : MonoBehaviour
 
             lineRenderer.SetPosition(i, new Vector3(x, y, 0));
         }
-    }
-    public Vector3[] GetCirclePoints()
-    {
-        Vector3[] points = new Vector3[lineRenderer.positionCount];
-        lineRenderer.GetPositions(points);
-        return points;
     }
     public Vector3[] GetKeyPoints(float radius)
     {
