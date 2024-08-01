@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CursorGazeBubbleController : CursorController
+public class CursorGazeBubbleController : MonoBehaviour
 {
     [Header("Prefab For Cursor Gaze Bubble")]
     public GameObject spherePrefabCursorGaze; // Prefab of the 3D sphere
@@ -11,20 +11,13 @@ public class CursorGazeBubbleController : CursorController
     [HideInInspector]
     public Vector3 upperRightBound, lowerLeftBound;
 
-    private CursorGazeBubbleController cursorGazeBubbleController;
-
-    public static new CursorGazeBubbleController instance;
+    public static CursorGazeBubbleController instance;
 
     private void Awake()
     {
         if (instance == null)
             instance = this;
     }
-    private void OnEnable()
-    {
-        cursorGazeBubbleController = new CursorGazeBubbleController();
-    }
-
     public void PlaceSpheresRandomly(int count)
     {
         for (int i = 0; i < count; i++)
@@ -44,8 +37,8 @@ public class CursorGazeBubbleController : CursorController
 
                 if (!IsOverlapping(newSphereTransform, radius))
                 {
-                    cursorGazeBubbleController.SetPlacedSpheres(newSphereTransform);
-                    dummySpheres.Add(newSphereTransform);
+                    CursorController.instance.SetPlacedSpheres(newSphereTransform);
+                    CursorController.instance.dummySpheres.Add(newSphereTransform);
 
                     positionFound = true;
                 }
@@ -59,7 +52,7 @@ public class CursorGazeBubbleController : CursorController
             }
             else
             {
-                newSphereTransform.SetParent(targetsParent.transform);
+                newSphereTransform.SetParent(CursorController.instance.targetsParent.transform);
             }
         }
         RandomPrimaryTarget();
@@ -74,7 +67,7 @@ public class CursorGazeBubbleController : CursorController
     }
     bool IsOverlapping(Transform newSphere, float radius)
     {
-        foreach (Transform sphere in cursorGazeBubbleController.GetPlacedSpheres())
+        foreach (Transform sphere in CursorController.instance.GetPlacedSpheres())
         {
             if (SphereOverlaps(newSphere.position, radius, sphere.position, sphere.localScale.x / 2))
             {
@@ -90,7 +83,7 @@ public class CursorGazeBubbleController : CursorController
     }
     public void RandomPrimaryTarget()
     {
-        cursorGazeBubbleController.GetPlacedSpheres()[UnityEngine.Random.Range(0, cursorGazeBubbleController.GetPlacedSpheres().Count - 1)].GetComponent<TargetsFunctionalities>().isPrimary = true;
+        CursorController.instance.GetPlacedSpheres()[UnityEngine.Random.Range(0, CursorController.instance.GetPlacedSpheres().Count - 1)].GetComponent<TargetsFunctionalities>().isPrimary = true;
     }
 
 }

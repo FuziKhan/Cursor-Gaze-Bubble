@@ -16,8 +16,6 @@ public class CircleDrawer : MonoBehaviour
 
     private int segments = 100; // The number of segments to approximate the circle
 
-    private SaccadeController saccadeController;
-
     public static CircleDrawer instance;
 
     private void Awake()
@@ -29,8 +27,6 @@ public class CircleDrawer : MonoBehaviour
     }
     private void OnEnable()
     {
-        saccadeController = new SaccadeController();
-
         if (lineMaterial == null)
         {
             Debug.LogError("Line Material is not assigned.");

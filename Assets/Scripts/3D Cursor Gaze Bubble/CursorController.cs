@@ -15,12 +15,6 @@ public class CursorController : MonoBehaviour
     [Header("Targets Parent")]
     public GameObject targetsParent;
 
-    [Header("Time For Simulation")]
-    public float timer = 30f;
-
-    [Header("Speed For Target Movement")]
-    public float speed = 1.0f; // Speed of movement
-
     [HideInInspector]
     public List<Transform> dummySpheres = new List<Transform>(); // List of dummy spheres
 
@@ -39,7 +33,7 @@ public class CursorController : MonoBehaviour
         lastMousePosition = Input.mousePosition;
 
         if (MenuController.saccade || MenuController.smoothPursuit)
-            sphere.localScale = new Vector3(0.2f, 0.2f, 1f);    //Constant scale is required in these modes
+            sphere.localScale = new Vector3(0.2f, 0.2f, 0.2f);    //Constant scale is required in these modes
     }
     void Update()
     {
@@ -58,7 +52,7 @@ public class CursorController : MonoBehaviour
             worldPosition = mainCamera.ViewportToWorldPoint(viewportPosition);
 
             // Update the sphere's position on the x and y axes
-            sphere.position = new Vector3(worldPosition.x, worldPosition.y, sphere.position.z);
+            sphere.position = new Vector2(worldPosition.x, worldPosition.y);
 
             // Find the closest dummy sphere
             if (dummySpheres.Count > 0)
@@ -92,11 +86,11 @@ public class CursorController : MonoBehaviour
         }
         return closestDummy;
     }
-    protected List<Transform> GetPlacedSpheres()
+    public List<Transform> GetPlacedSpheres()
     {
         return dummySpheres;
     }
-    protected void SetPlacedSpheres(Transform obj)
+    public void SetPlacedSpheres(Transform obj)
     {
         dummySpheres.Add(obj);
     }
@@ -118,7 +112,9 @@ public class CursorController : MonoBehaviour
                 Destroy(targetsParent.transform.GetChild(i).gameObject);
             }
         }
+
         dummySpheres.Clear();
+
         if (CircleDrawer.instance)
         {
             CircleDrawer.instance.lineRenderer.positionCount = 0;

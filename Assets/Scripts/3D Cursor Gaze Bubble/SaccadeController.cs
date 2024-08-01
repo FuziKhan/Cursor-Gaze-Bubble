@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class SaccadeController : CursorController
+public class SaccadeController : MonoBehaviour
 {
     [Header("Prefab For Saccade")]
     public GameObject spherePrefabSaccade; // Prefab of the 3D sphere
@@ -11,16 +11,15 @@ public class SaccadeController : CursorController
     public bool horizontalSaccade = false;
     public bool verticalSaccade = false;
 
-    private Vector3[] saccadePoints;
+    [Header("Timer")]
+    public float timer = 1f;
 
-    private SaccadeController saccadeController;
+    private float flag = 0f;
+
+    private Transform saccadeSphere;
 
     private void OnEnable()
     {
-        saccadeController = new SaccadeController();
-
-        saccadePoints = CircleDrawer.instance.GetKeyPoints(CircleDrawer.instance.radius);
-
         PlaceSphereInCircleSaccade();
         StartCoroutine(TimeLapsedCheckerSaccade());
     }
@@ -39,51 +38,54 @@ public class SaccadeController : CursorController
     }
     void SaccadePositionChange()
     {
-        if (saccadeController.GetPlacedSpheres().Count > 0 && targetsParent.transform.childCount > 0)
+        if (horizontalSaccade)
         {
-            if (horizontalSaccade)
-            {
-                int x = UnityEngine.Random.Range(2, 4);     //For Right/Left
-                saccadeController.GetPlacedSpheres()[0].transform.position = new Vector3(saccadePoints[x].x, saccadePoints[x].y, saccadePoints[x].z);
-            }
-            else if (verticalSaccade)
-            {
-                int x = UnityEngine.Random.Range(0, 2);     //For Up/Down
-                saccadeController.GetPlacedSpheres()[0].transform.position = new Vector3(saccadePoints[x].x, saccadePoints[x].y, saccadePoints[x].z);
-            }
+            float angle = horizontalSaccade ? flag : Mathf.PI; // 0 for up, PI for down
+            float x = Mathf.Cos(angle) * CircleDrawer.instance.radius; // Use Cos for vertical
+                                                                       // 
+            if (flag == 0)
+                flag = MathF.PI;
+            else
+                flag = 0;
+
+            // Update the position of the object
+            saccadeSphere.position = new Vector3(x, saccadeSphere.position.y, saccadeSphere.position.z);
+        }
+        else if (verticalSaccade)
+        {
+            float angle = verticalSaccade ? flag : Mathf.PI; // 0 for up, PI for down
+            float y = Mathf.Cos(angle) * CircleDrawer.instance.radius; // Use Cos for vertical
+                                                                       // 
+            if (flag == 0)
+                flag = MathF.PI;
+            else
+                flag = 0;
+
+            // Update the position of the object
+            saccadeSphere.position = new Vector3(saccadeSphere.position.x, y, saccadeSphere.position.z);
         }
     }
     public IEnumerator TimeLapsedCheckerSaccade()
     {
-        float elapsedTime = 0f;
-        float checkInterval = 1f;
-
-        while (elapsedTime < timer)
+        for (int i = 0; i < timer; i++)
         {
-            float intervalStartTime = Time.time;
-
-            while (Time.time - intervalStartTime < checkInterval)
-            {
-                // Perform any logic you need to check every frame here
-                yield return null;
-            }
-
-            // Logic to be executed every second
+            // Your command to run every second
             Debug.Log("One second has passed");
             SaccadePositionChange();
-            elapsedTime += checkInterval;
+            yield return new WaitForSeconds(1f);
         }
+
         Debug.Log("30 seconds have passed. Exiting coroutine.");
         horizontalSaccade = false;
         verticalSaccade = false;
-        CompleteSimulation();
+        CursorController.instance.CompleteSimulation();
     }
     public void PlaceSphereInCircleSaccade()
     {
         Transform newSphereTransform = Instantiate(spherePrefabSaccade).transform;
-        newSphereTransform.SetParent(targetsParent.transform);
+        newSphereTransform.SetParent(CursorController.instance.targetsParent.transform);
 
-        saccadeController.SetPlacedSpheres(newSphereTransform);
+        saccadeSphere = newSphereTransform;
         SaccadePositionChange();
     }
 }
